@@ -5,3 +5,7 @@ variable "runtime" {
 variable "collectionid-role-arn" {
   default = ""
 }
+
+variable "rekognition-faceprints-role-arn" {
+  default = ""
+}
