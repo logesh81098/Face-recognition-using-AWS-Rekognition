@@ -18,5 +18,6 @@ resource "aws_instance" "rekognition-jenkins-server" {
   }
   tags = {
     Name = "Face-Rekognition-Jenkins-Server"
+    Project = "Recognizing-faces-using-AWS-Rekognition-service"
   }
 }
