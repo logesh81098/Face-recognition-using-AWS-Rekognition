@@ -11,6 +11,7 @@ module "lambda-function" {
   source = "./module/lambda-function"
   collectionid-role-arn = module.iam.collectionid-role-arn
   rekognition-faceprints-role-arn = module.iam.rekognition-faceprints-role-arn
+  source-bucket-arn =  module.s3.source-bucket-arn
 }
 
 module "dynamodb" {

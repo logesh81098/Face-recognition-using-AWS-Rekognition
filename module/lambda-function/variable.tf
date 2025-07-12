@@ -3,9 +3,13 @@ variable "runtime" {
 }
 
 variable "collectionid-role-arn" {
-  default = ""
+  default = {}
 }
 
 variable "rekognition-faceprints-role-arn" {
-  default = ""
+  default = {}
+}
+
+variable "source-bucket-arn" {
+  default = {}
 }
