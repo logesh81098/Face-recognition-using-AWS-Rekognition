@@ -30,3 +30,11 @@ module "security-group" {
 module "key-pair" {
   source = "./module/key-pair"
 }
+
+module "ec2-instance" {
+  source = "./module/ec2-instance"
+  subnet = module.vpc.subnet-1
+  security-group = module.security-group.jenkins-server-sg
+  keypair = module.key-pair.keypair
+  iam-instance-profile = module.iam.jenkins-server-instance-profile
+}

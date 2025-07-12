@@ -289,7 +289,7 @@ resource "aws_iam_role_policy_attachment" "jenkins-server" {
 #                                                                     IAM Instance Profile
 ####################################################################################################################################################################################
 
-resource "aws_iam_instance_profile" "face-rekognition-jenkins-server" {
+resource "aws_iam_instance_profile" "jenkins-server-instance-profile" {
   name = "Rekognition-Flask-Application-Server-Role"
   role = aws_iam_role.jenkins-server-role.id
 }
