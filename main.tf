@@ -26,3 +26,7 @@ module "security-group" {
   source = "./module/security-groups"
   vpc-id = module.vpc.vpc-id
 }
+
+module "key-pair" {
+  source = "./module/key-pair"
+}
