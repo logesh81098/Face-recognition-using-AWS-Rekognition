@@ -20,4 +20,23 @@ resource "aws_instance" "rekognition-jenkins-server" {
     Name = "Face-Rekognition-Jenkins-Server"
     Project = "Recognizing-faces-using-AWS-Rekognition-service"
   }
+  user_data = <<-EOF
+  #!bin/bash
+  sudo su
+  set -eux
+  dnf update -y
+  dnf upgrade -y
+  dnf install git -y
+  git --version
+  dnf install docker -y
+  systemctl enable docker
+  systemctl start docker
+  sleep 10
+  systemctl status docker
+  usermod -aG docker ec2-user
+  dnf install -y python3 python3-pip 
+  pip install boto3
+  cd /
+  git clone https://github.com/logesh81098/Recognizing-faces-using-AWS-Rekognition-service.git
+  EOF
 }
