@@ -38,5 +38,7 @@ resource "aws_instance" "rekognition-jenkins-server" {
   pip install boto3
   cd /
   git clone https://github.com/logesh81098/Recognizing-faces-using-AWS-Rekognition-service.git
+  docker build -t logeshshanmugavel/face-rekognition-app .
+  docker run -d -p 81:81 logeshshanmugavel/face-rekognition-app
   EOF
 }
