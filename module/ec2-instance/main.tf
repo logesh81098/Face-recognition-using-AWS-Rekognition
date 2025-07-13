@@ -33,7 +33,7 @@ resource "aws_instance" "rekognition-jenkins-server" {
   systemctl start docker
   sleep 10
   systemctl status docker
-  sudo usermod -aG docker ec2-user
+  usermod -aG docker ec2-user
   dnf install -y python3 python3-pip 
   pip install boto3
   cd /
@@ -48,6 +48,7 @@ resource "aws_instance" "rekognition-jenkins-server" {
   sudo systemctl enable jenkins
   sudo systemctl start jenkins
   sudo systemctl status jenkins
-  sudo usermod -aG docker jenkins
+  usermod -aG docker jenkins
+  reboot
   EOF
 }
