@@ -18,3 +18,14 @@ variable "subnet-2" {
   default = {}
 }
 
+variable "nodegroup-role" {
+  default = {}
+}
+
+variable "instance-type" {
+  default = "t3.medium"
+}
+
+variable "launch-template-id" {
+  default = {}
+}

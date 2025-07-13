@@ -45,6 +45,8 @@ module "eks" {
   subnet-1 = module.vpc.subnet-1
   subnet-2 = module.vpc.subnet-2
   cluster-sg = module.security-group.eks-cluster-sg
+  nodegroup-role = module.iam.eks-nodegroup-arn
+  launch-template-id = module.launch-template.launch-template-id
 }
 
 module "launch-template" {
