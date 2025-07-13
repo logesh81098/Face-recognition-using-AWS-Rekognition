@@ -55,3 +55,6 @@ module "launch-template" {
   application-sg = module.security-group.jenkins-server-sg
   nodegroup-sg = module.security-group.eks-nodegroup-sg
 }
+
+
+#Need to add k8S service account.  So that containers can able to connect with other services
