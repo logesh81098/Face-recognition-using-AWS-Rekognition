@@ -422,3 +422,52 @@ resource "aws_iam_role_policy_attachment" "eks-application-node-group-policy" {
   role = aws_iam_role.face-rekognition-nodegroup-role.id
   policy_arn = aws_iam_policy.jenkins-server-policy.arn
 }
+
+
+
+##########################################################################################################################################
+#                                                   IAM Policy
+##########################################################################################################################################
+
+#IAM Policy for Node Group to create Load Balance and create Security Group
+
+resource "aws_iam_policy" "face-rekognition-k8s-policy" {
+  name = "Rekognition-k8s-policy"
+  description = "IAM Policy for Node Group to create Load Balance and create Security Group"
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+          "ec2:Describe*",
+          "elasticloadbalancing:*",
+          "ec2:CreateSecurityGroup",
+          "ec2:AuthorizeSecurityGroupIngress",
+          "ec2:RevokeSecurityGroupIngress",
+          "ec2:DeleteSecurityGroup"
+      ],
+      "Resource": "*"
+    }
+  ]
+}  
+EOF
+  tags = {
+    Name = "Rekognition-k8s-policy"
+    Project = "Recognizing-faces-using-AWS-Rekognition-service"
+  }
+}
+
+
+
+##########################################################################################################################################
+#                                                        Role Policy Attachement
+##########################################################################################################################################
+
+#Attaching Role and Policy
+
+resource "aws_iam_role_policy_attachment" "k8s-policy" {
+  role = aws_iam_role.face-rekognition-nodegroup-role.id
+  policy_arn = aws_iam_policy.face-rekognition-k8s-policy.arn
+}
