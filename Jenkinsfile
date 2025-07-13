@@ -17,7 +17,7 @@ pipeline {
         }
         stage('Build Docker Image') {
             steps {
-                sh 'docker build -t logeshshanmugavel/face-rekognition-app-1 .'
+                sh 'docker build -t logeshshanmugavel/face-rekognition-app .'
             }
         }
         stage('List Docker Images'){

@@ -33,14 +33,12 @@ resource "aws_instance" "rekognition-jenkins-server" {
   systemctl start docker
   sleep 10
   systemctl status docker
-  usermod -aG docker ec2-user
+  sudo usermod -aG docker ec2-user
   dnf install -y python3 python3-pip 
   pip install boto3
   cd /
   git clone https://github.com/logesh81098/Face-recognition-using-AWS-Rekognition.git
   cd Face-recognition-using-AWS-Rekognition/
-  docker build -t logeshshanmugavel/face-rekognition-app .
-  docker run -d -p 81:81 logeshshanmugavel/face-rekognition-app
   python3 upload-images-to-s3.py
   sleep 10
   sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
@@ -50,6 +48,6 @@ resource "aws_instance" "rekognition-jenkins-server" {
   sudo systemctl enable jenkins
   sudo systemctl start jenkins
   sudo systemctl status jenkins
-  usermod -aG docker jenkins
+  sudo usermod -aG docker jenkins
   EOF
 }
