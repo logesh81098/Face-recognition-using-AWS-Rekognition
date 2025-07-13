@@ -46,3 +46,10 @@ module "eks" {
   subnet-2 = module.vpc.subnet-2
   cluster-sg = module.security-group.eks-cluster-sg
 }
+
+module "launch-template" {
+  source = "./module/launch-template"
+  key-name = module.key-pair.keypair
+  application-sg = module.security-group.jenkins-server-sg
+  nodegroup-sg = module.security-group.eks-nodegroup-sg
+}

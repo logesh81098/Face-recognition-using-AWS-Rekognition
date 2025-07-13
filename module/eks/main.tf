@@ -13,7 +13,9 @@ resource "aws_eks_cluster" "eks-cluster" {
     subnet_ids = [ var.subnet-1, var.subnet-2 ]
   }
   tags = {
-    Name = "Face-Rekogntion-Cluster"
+    Name = "Face-Rekognition-Cluster"
     Project = "Recognizing-faces-using-AWS-Rekognition-service"
   }
 }
+
+
