@@ -38,3 +38,11 @@ module "ec2-instance" {
   keypair = module.key-pair.keypair
   iam-instance-profile = module.iam.jenkins-server-instance-profile
 }
+
+module "eks" {
+  source = "./module/eks"
+  cluster-iam-role = module.iam.eks-cluster-role-arn
+  subnet-1 = module.vpc.subnet-1
+  subnet-2 = module.vpc.subnet-2
+  cluster-sg = module.security-group.eks-cluster-sg
+}
