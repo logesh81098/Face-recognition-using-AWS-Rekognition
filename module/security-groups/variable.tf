@@ -25,3 +25,7 @@ variable "Jenkins-port" {
 variable "Application-port" {
   default = "81"
 }
+
+variable "API-Server" {
+  default = "443"
+}
