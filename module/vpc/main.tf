@@ -27,7 +27,7 @@ resource "aws_subnet" "face-rekognition-public-subnet-1" {
     Name = "Face-Rekognition-Public-Subnet-1"
     Project = "Recognizing-faces-using-AWS-Rekognition-service"
     "kubernetes.io/role/elb" = "1"
-    "kubernetes.io/cluster/Face-Rekogntion-Cluster" = "shared"
+    "kubernetes.io/cluster/Face-Rekognition-Cluster" = "shared"
   }
 }
 
@@ -41,11 +41,9 @@ resource "aws_subnet" "face-rekognition-public-subnet-2" {
     Name = "Face-Rekognition-Public-Subnet-2"
     Project = "Recognizing-faces-using-AWS-Rekognition-service"
     "kubernetes.io/role/elb" = "1"
-    "kubernetes.io/cluster/Face-Rekogntion-Cluster" = "shared"
+    "kubernetes.io/cluster/Face-Rekognition-Cluster" = "shared"
   }
 }
-
-
 
 
 ##########################################################################################################################################
