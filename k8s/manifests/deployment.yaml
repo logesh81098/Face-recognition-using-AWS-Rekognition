@@ -15,8 +15,13 @@ spec:
       labels:
         app: face-rekognition
     spec:
+      serviceAccountName: face-rekognition-sa
       containers:
       - name: face-rekognition-app
         image: logeshshanmugavel/face-rekognition-app:latest
         ports:
         - containerPort: 81
+
+
+
+#[Note:Updated Deployment file with Service Account Name]
