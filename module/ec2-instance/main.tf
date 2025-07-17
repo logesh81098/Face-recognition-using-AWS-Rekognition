@@ -36,6 +36,10 @@ resource "aws_instance" "rekognition-jenkins-server" {
   usermod -aG docker ec2-user
   dnf install -y python3 python3-pip 
   pip install boto3
+  curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/amd64/kubectl
+  curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/amd64/kubectl.sha256
+  chmod +x ./kubectl
+  mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
   cd /
   git clone https://github.com/logesh81098/Face-recognition-using-AWS-Rekognition.git
   cd Face-recognition-using-AWS-Rekognition/
@@ -50,9 +54,5 @@ resource "aws_instance" "rekognition-jenkins-server" {
   sudo systemctl status jenkins
   usermod -aG docker jenkins
   reboot
-  curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/amd64/kubectl
-  curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/amd64/kubectl.sha256
-  chmod +x ./kubectl
-  mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
   EOF
 }
