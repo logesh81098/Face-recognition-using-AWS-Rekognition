@@ -66,3 +66,111 @@ resource "aws_iam_openid_connect_provider" "face-rekognition-openid-connect-prov
   client_id_list = ["sts.amazonaws.com"]
 }
 
+
+
+###################################################################################################################################################################################
+#                                                        IAM Role
+##################################################################################################################################################################################
+
+#IAM Role for Service Account 
+
+resource "aws_iam_role" "rekognition_irsa_role" {
+  name = "Rekognition-IRSA-Role"
+  description = "IAM Role for Service Account"
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Principal = {
+          Federated = aws_iam_openid_connect_provider.face-rekognition-openid-connect-provider.arn
+        },
+        Action = "sts:AssumeRoleWithWebIdentity",
+        Condition = {
+          StringEquals = {
+            "oidc.eks.us-east-1.amazonaws.com/id/73F2CF662342DD5E19ACBF3EF48C904F:sub": "system:serviceaccount:default:face-rekognition-sa"
+          }
+        }
+      }
+    ]
+  })
+}
+
+
+#[Note: We might required to change the OIDC ARN eacg time for new creation on line 91] 
+
+
+##########################################################################################################################################
+#                                                   IAM Policy
+##########################################################################################################################################
+
+#IAM Policy for OpenID connect provider
+
+resource "aws_iam_policy" "rekognition-openid-connect-provider-policy" {
+  name = "Rekognition-IRSA-Policy"
+  description = "IAM Policy for for OpenID-Connect-Provider"
+  policy = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "CloudWatchLogGroup",
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogGroup",
+                "logs:CreateLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": "arn:aws:logs:*:*:*"
+        },
+        {
+            "Sid": "DynamoDBGetItems",
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:*"
+            ],
+            "Resource": "arn:aws:dynamodb:*:*:*"
+        },
+        {
+            "Sid": "RekognitionIndexFace",
+            "Effect": "Allow",
+            "Action": [
+                "rekognition:*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "S3PutSourceImage",
+            "Effect": "Allow",
+            "Action": [
+                "s3:ListBucket",
+                "s3:PutObject",
+                "s3:GetObject",
+                "s3:HeadObject"
+            ],
+            "Resource": [
+                "arn:aws:s3:::face-rekognition-source-bucket/*",
+                "arn:aws:s3:::face-rekognition-source-bucket"
+            ]
+        }
+    ]
+
+}  
+EOF
+  tags = {
+    Name = "Rekognition-IRSA-Policy"
+    Project = "Recognizing-faces-using-AWS-Rekognition-service"
+  }
+}
+
+
+##########################################################################################################################################
+#                                                        Role Policy Attachement
+##########################################################################################################################################
+
+#Attaching Role and Policy
+
+resource "aws_iam_role_policy_attachment" "eks-irsa" {
+  role = aws_iam_role.rekognition_irsa_role.id
+  policy_arn = aws_iam_policy.rekognition-openid-connect-provider-policy.arn
+}
