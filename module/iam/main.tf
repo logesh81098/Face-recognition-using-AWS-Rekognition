@@ -251,6 +251,15 @@ resource "aws_iam_policy" "jenkins-server-policy" {
       "Resource": "*"
     },
     {
+      "Sid": "DescribeEKSCluster",
+      "Effect": "Allow",
+      "Action": [
+        "eks:DescribeCluster"
+      ],
+      "Resource": "arn:aws:eks:us-east-1:968514664097:cluster/Face-Rekognition-Cluster"
+
+    },
+    {
       "Sid": "S3PutSourceImage",
       "Effect": "Allow",
       "Action": [
