@@ -1,6 +1,5 @@
 pipeline {
     agent any
-
     stages {
         stage('Clone GitHub Repository') {
             steps {
@@ -44,5 +43,44 @@ pipeline {
                 sh 'docker push logeshshanmugavel/face-rekognition-app'
             }
         }
+        stage('Install kubectl'){
+            steps{
+                sh '''
+                curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/amd64/kubectl
+                curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.33.0/2025-05-01/bin/linux/amd64/kubectl.sha256
+                chmod +x ./kubectl
+                mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$HOME/bin:$PATH
+                '''
+            }
+        }
+        stage('Check the Package Version'){
+            steps{
+                sh '''
+                aws --version
+                PATH=/var/lib/jenkins/bin:$PATH
+                kubectl version --client
+                '''
+            }
+        }
+        stage('Login to AWS') {
+            steps {
+                withCredentials([usernamePassword(
+                    credentialsId: 'jenkins-user',
+                    usernameVariable: 'AWS_ACCESS_KEY_ID',
+                    passwordVariable: 'AWS_SECRET_ACCESS_KEY'
+                )]) {
+                    sh '''
+                    export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
+                    export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+                    export AWS_DEFAULT_REGION=us-east-1
+
+                    aws sts get-caller-identity || { echo "AWS login failed"; exit 1; }
+
+                    echo "Logged in to AWS Successfully :)"
+                    '''
+                }
+            }
+        }
+        
     }
 }
