@@ -79,6 +79,24 @@ pipeline {
                 }
             }
         }
-        
+        stage('Update Kubeconfig'){
+            steps{
+                sh '''
+                aws eks update-kubeconfig --name Face-Rekognition-Cluster --region us-east-1
+                '''
+            }
+        }
+        stage('Run Manifest files'){
+            steps{
+                sh '''
+                cd k8s/manifests/
+                ls
+                PATH=/var/lib/jenkins/bin:$PATH
+                kubectl apply -f deployment.yaml
+                kubectl apply -f service.yaml
+                kubectl apply -f serviceaccount.yaml
+                '''
+            }
+        }
     }
 }
